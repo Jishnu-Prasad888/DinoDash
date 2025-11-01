@@ -1,16 +1,73 @@
-# React + Vite
+# Dino Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple browser-based game where you control a dinosaur to catch falling cakes while avoiding comets.
 
-Currently, two official plugins are available:
+## How to Play
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Use **LEFT** and **RIGHT** arrow keys to move the dinosaur
+- Catch **cakes** to increase your score
+- Avoid **comets** to preserve your lives
+- You start with 3 lives
+- Game ends when all lives are lost
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Smooth keyboard controls
+- Increasing difficulty as score rises
+- Dynamic comet spawn rates
+- Responsive design
+- Score tracking system
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- JavaScript
+- HTML5
+- CSS3
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/dino-game.git
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm start
+```
+
+## Deployment
+
+This project can be easily deployed on Vercel:
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy with one click
+
+## Game Rules
+
+- Each cake caught: +1 score
+- Each comet hit: -1 life
+- Game gets harder as your score increases
+- Comets fall faster at higher scores
+
+## Development
+
+To modify the game, you can adjust:
+
+- Game speed in the game loop
+- Spawn rates in the useEffect hooks
+- Difficulty scaling in getDifficultyMultiplier()
+
+## License
+
+MIT License - feel free to use this project for learning purposes.
