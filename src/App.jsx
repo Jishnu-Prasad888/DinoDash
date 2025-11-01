@@ -8,7 +8,7 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [playing, setPlaying] = useState(false);
-
+  const [cometsRate, setcometsRate] = useState(0);
   const gameRef = useRef();
   const keysPressed = useRef({});
   const animationFrameRef = useRef();
@@ -209,11 +209,21 @@ export default function App() {
         );
 
         // Move comets
-        setComets((cs) =>
-          cs
-            .map((c) => ({ ...c, y: c.y + 7 }))
-            .filter((c) => c.y < window.innerHeight)
-        );
+        if (score >= 10) {
+          setcometsRate(score * 0.1);
+          setComets((cs) =>
+            cs
+              .map((c) => ({ ...c, y: c.y + 7 + cometsRate }))
+              .filter((c) => c.y < window.innerHeight)
+          );
+        }
+        else {
+          setComets((cs) =>
+            cs
+              .map((c) => ({ ...c, y: c.y + 7 }))
+              .filter((c) => c.y < window.innerHeight)
+          );
+        }
 
         // Check collisions after position updates
         setTimeout(() => checkCollisions(), 0);
@@ -262,7 +272,7 @@ export default function App() {
           },
         ]);
       }
-    }, 2500);
+    }, 2500 - cometsRate * 100);
 
     return () => {
       clearInterval(appleSpawner);
