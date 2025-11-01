@@ -188,8 +188,14 @@ export default function App() {
     };
   }, [playing]);
 
+  const getDifficultyMultiplier = () => {
+    const baseScore = Math.max(0, score - 5); // Start ramping after score 10
+    return Math.min(3, 1 + baseScore * 0.1); // Cap at 2x difficulty
+  };
+
   // Combined game loop for object movement and collision detection
   useEffect(() => {
+    const cometVelocity = getDifficultyMultiplier();
     if (!playing) return;
 
     let lastGameUpdate = 0;
@@ -213,7 +219,7 @@ export default function App() {
           setcometsRate(score * 0.1);
           setComets((cs) =>
             cs
-              .map((c) => ({ ...c, y: c.y + 7 + cometsRate }))
+              .map((c) => ({ ...c, y: c.y + 7 + cometVelocity }))
               .filter((c) => c.y < window.innerHeight)
           );
         }
@@ -261,6 +267,8 @@ export default function App() {
       }
     }, 1200);
 
+    // Comet spawn rate decreases (spawns more frequently) as score increases
+    const baseCometRate = Math.max(300, 2000 - score * 60); // More noticeable change
     const cometSpawner = setInterval(() => {
       if (playingRef.current) {
         setComets((c) => [
@@ -272,13 +280,13 @@ export default function App() {
           },
         ]);
       }
-    }, 2500 - cometsRate * 100);
+    }, baseCometRate);
 
     return () => {
       clearInterval(appleSpawner);
       clearInterval(cometSpawner);
     };
-  }, [playing]);
+  }, [playing, score]); // Add score dependency to respawn comets when score changes
 
   const startGame = () => {
     setScore(0);
