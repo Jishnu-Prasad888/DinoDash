@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import dinoImg from "./assets/dino.png";
+import StartScreen from "./components/StartScreen";
+
 
 export default function App() {
   const [dinoX, setDinoX] = useState(200);
@@ -21,6 +23,17 @@ export default function App() {
   const cometsRef = useRef(comets);
   const playingRef = useRef(playing);
   const livesRef = useRef(lives);
+
+  const [backgroundElements] = useState(() =>
+    Array.from({ length: 15 }, (_, i) => ({
+      id: i,
+      type: Math.random() > 0.5 ? 'cloud' : 'tree',
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * (window.innerHeight - 200),
+      size: 30 + Math.random() * 50,
+      opacity: 0.1 + Math.random() * 0.15 // Very subtle grey
+    }))
+  );
 
   // Sync refs with state
   useEffect(() => {
@@ -312,6 +325,23 @@ export default function App() {
         Lives: {lives}
       </div>
 
+      {backgroundElements.map((element) => (
+        <div
+          key={element.id}
+          className="absolute background-element"
+          style={{
+            left: element.x,
+            top: element.y,
+            fontSize: `${element.size}px`,
+            opacity: element.opacity,
+            color: '#4a5568', // Subtle grey color
+            filter: 'blur(0.5px)',
+            zIndex: 0
+          }}
+        >
+          {element.type === 'cloud' ? '☁️' : '🌲'}
+        </div>
+      ))}
       {/* Dino */}
       <img
         src={dinoImg}
@@ -343,20 +373,9 @@ export default function App() {
       ))}
 
       {!playing && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-white">
-          <h1 className="text-4xl font-bold mb-4">
-            {lives <= 0 ? "Game Over!" : "Dino Apple Catch"}
-          </h1>
-          {lives <= 0 && <p className="mb-4 text-lg">Final Score: {score}</p>}
-          <button
-            onClick={startGame}
-            className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors duration-200 font-bold"
-          >
-            {lives <= 0 ? "Play Again" : "Start Game"}
-          </button>
-          <p className="mt-4 text-sm">Use Arrow Keys to move left and right</p>
-        </div>
+        <StartScreen lives={lives} score={score} startGame={startGame} isGameOver={lives === 0} />
       )}
+
     </div>
   );
 }
